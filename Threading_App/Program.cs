@@ -1,75 +1,75 @@
-﻿internal class Program
-{
+﻿using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks.Dataflow;
 
+internal class Program
+{
+    /// 
+    /// <summary>
+    /// This sample application shows various ways for how to synchronyze work in a multithreaded application.
+    /// </summary>
+    /// 
+    private static Semaphore _pool; // A semaphore shared by all threads that limits the number of threads concurrently working on resouces. 
+    private static Thread[] _threads;
+    private static Random _rand = new Random();
+    private static bool _exit = false;
+
+    private static Mutex _mutex = new Mutex(); // Mutual exlusion synchonizer to limit work to a single thread.
 
     private static void Main(string[] args)
     {
-        int limit = Array.MaxLength;
-        //int limit = 100000;
+        Console.WriteLine("Classic threading example with semaphore.");
 
-        Console.WriteLine("Calculating primes below {0}...\n", limit);
-        bool[] numbers = new bool[limit];
-        bool end = false;
+        _exit = false;
+        _pool = new Semaphore(0,3);
+        _threads = new Thread[5];
 
+        int i = 0;
+        int len = _threads.Length;
 
-        DateTime t = DateTime.Now;
-
-        int x = 2;
-        int n = 0;
-        numbers[x] = true;
-        
-        while (x != -1)
+        for(i=0; i<len; i++)
         {
-            x = MarkComposites(x);
+            _threads[i] = new Thread(() => { DoWork(); });
+            _threads[i].Name = i.ToString();    
+            _threads[i].Start();
+        }
+
+        _pool.Release(2);
+        Console.WriteLine("Threads started.");
+
+        ConsoleKeyInfo kinfo = Console.ReadKey();
+
+        while(kinfo.Key != ConsoleKey.X)
+        {
+            kinfo = Console.ReadKey();
+        }
+
+        Console.WriteLine("\nExiting app");
+
+        _exit = true;
+    }
+
+    /// <summary>
+    /// Process that does some work on shared resources.
+    /// </summary>
+    private static void DoWork()
+    {
+        //int dur = _rand.Next(5000);
+        int dur = 1000;
+        int n = 1;
+
+        while ( !_exit )
+        {
+            _pool.WaitOne();
+
+            Thread.Sleep(dur);
+            Console.WriteLine("Thread {0} has executed {1} times", Thread.CurrentThread.Name, n);
+
+            _pool.Release();
             n++;
         }
 
-        TimeSpan dur = DateTime.Now - t;
-        Console.WriteLine("{0} prime numbers in total.", n.ToString("N0"));
-        Console.WriteLine("Execution time: {0}", dur);
-
-        /*
-        Console.Write(@"{");
-
-        for (x = 3; x < limit; x++)
-        {
-            if (numbers[x])
-            {
-                Console.Write("," + x);
-            }
-        }
-
-
-        Console.WriteLine(@"}");
-        */
-
-        int MarkComposites(int prime) // Increments starting prime by the prime itself to figure out all number of which it is a composite.
-        {
-            int m = prime * 2;  //Calculate first composite following the primes itself.
-
-            while (m < limit && m > 0)
-            {
-                numbers[m] = true;           
-                m += prime;
-            }
-
-            int n = prime + 1; // Start at number right after prime.
-
-            while (n < limit )
-            {
-                if (numbers[n] == false)
-                {
-                    //Console.Write("," + n);
-                    return n;                        
-                }
-
-                n++;
-            }
-            
-
-            return -1;
-        }
+        Console.WriteLine("Exting thread {0}.", Thread.CurrentThread.Name);
     }
-
    
 }
