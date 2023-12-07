@@ -8,7 +8,10 @@ internal class Program
     /// <summary>
     /// This sample application shows various ways for how to synchronyze work in a multithreaded application.
     /// </summary>
-    /// 
+    /// <remarks>
+    /// 1. Start app.
+    /// 2. Press M key to switch mutual exlusion on and off.
+    /// </remarks>
     private static Semaphore _pool; // A semaphore shared by all threads that limits the number of threads concurrently working on resouces. 
     private static Thread[] _threads;
     private static Random _rand = new Random();
