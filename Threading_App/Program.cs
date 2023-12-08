@@ -12,11 +12,13 @@ internal class Program
     /// 1. Start app.
     /// 2. Press M key to switch mutual exlusion on and off.
     /// </remarks>
-    private static Semaphore _pool; // A semaphore shared by all threads that limits the number of threads concurrently working on resouces. 
+    private static Semaphore _lock; // A semaphore shared by all threads that limits the number of threads concurrently working on resouces. 
     private static Thread[] _threads;
     private static Random _rand = new Random();
     private static bool _exit = false;
     private static int _counter = 0;
+    private static int _balance = 0;
+    private static int _steps = 1;
     private static bool _useMutex = true;
 
 
@@ -24,12 +26,11 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("Classic threading example with semaphore.");
+        Console.WriteLine("Classic threading example with self-managhed thread pool.");
 
         _exit = false;
-        _pool = new Semaphore(0,5);
+        _lock = new Semaphore(0,5);
         _threads = new Thread[5];
-        //Interlocked.Exchange(ref _useMutex, 1);
 
     int i = 0;
         int len = _threads.Length;
@@ -41,7 +42,7 @@ internal class Program
             _threads[i].Start();
         }
 
-        _pool.Release(5);
+        _lock.Release(5);
         Console.WriteLine("Threads started.");
 
         ConsoleKeyInfo kinfo = Console.ReadKey();
@@ -54,7 +55,9 @@ internal class Program
 
                 case ConsoleKey.M:
                     _useMutex = !_useMutex;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Switch mutual exclusion {0}.", _useMutex? "ON":"OFF" );
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     break;
                 case ConsoleKey.N:
@@ -86,29 +89,29 @@ internal class Program
 
         while ( !_exit )
         {
-            _pool.WaitOne(); // Ensure only a given number of threads use resources.
+            _lock.WaitOne(); // Ensure only a given number of threads use resources.
 
             Thread.Sleep(dur);
-            //Console.WriteLine("Thread {0} has executed {1} times", Thread.CurrentThread.Name, n);
 
             if ( _useMutex )
             {
                 _mutex.WaitOne();
                 _counter++;
-                Console.WriteLine("{0}: _count={1};", Thread.CurrentThread.Name, _counter);
+                _steps = -_steps;
+                _balance += _steps;
+                Console.WriteLine("{0}: _count={1}; _balance={2}", Thread.CurrentThread.Name, _counter,_balance);
                 _mutex.ReleaseMutex();
             }
             else
             {
-                Console.WriteLine("{0}: _count={1};", Thread.CurrentThread.Name, _counter);
                 _counter++;
+                _steps = -_steps;
+                _balance += _steps;
+                Console.WriteLine("{0}: _count={1}; _balance={2}", Thread.CurrentThread.Name, _counter, _balance);
             }
 
-            _pool.Release();
+            _lock.Release();
             n++;
         }
-
-        Console.WriteLine("Exting thread {0}.", Thread.CurrentThread.Name);
     }
-   
 }
