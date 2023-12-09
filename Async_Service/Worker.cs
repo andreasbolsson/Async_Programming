@@ -11,12 +11,14 @@ namespace Async_Service
             _logger = logger;
             
             Task<string> t1 = SingleTask("Greeting Earthlings!", 1000);
+            Announce(t1.Id);
 
-            _singleTask = SingleTask("\nWe come in peace.",1500);
+            _singleTask = SingleTask("We come in peace.",1500);
+            Announce( _singleTask.Id );
 
             t1.Wait();
 
-            Console.WriteLine(t1.Result);
+            DisplayMessage(t1.Id, t1.Result);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,7 +29,7 @@ namespace Async_Service
             {
                 if(_singleTask.IsCompleted && !received)
                 {
-                    Console.Write(_singleTask.Result);
+                    DisplayMessage(_singleTask.Id, _singleTask.Result);
                     received = true;
                 }
 
@@ -40,8 +42,6 @@ namespace Async_Service
 
         private async Task<string> SingleTask(string str, int d)
         {
-            Console.Write("\nIncoming message from the Boötes Void");
-
             for (int i = 0; i < 10; i++)
             {
                 Console.Write(".");
@@ -50,5 +50,16 @@ namespace Async_Service
 
             return str;
         }
+
+        private void DisplayMessage(int id, string message)
+        {
+            Console.Write("\n\nMessage {0}: {1}\n", id, message);
+        }
+
+        private void Announce(int id)
+        {
+            Console.Write("\nAwaiting message {0} from Boötes Void", id);
+        }
+
     }
 }
