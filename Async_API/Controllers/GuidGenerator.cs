@@ -7,11 +7,6 @@ namespace Async_API.Controllers
     [Route("[controller]")]
     public class GuidGeneratorController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
         private readonly ILogger<GuidGeneratorController> _logger;
 
         public GuidGeneratorController(ILogger<GuidGeneratorController> logger)

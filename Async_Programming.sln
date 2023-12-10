@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Async_Service", "Async_Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Async_API", "Async_API\Async_API.csproj", "{497D8187-23F4-49EC-BD3D-9DC46F24C608}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Async_Service_WithPerformance", "Async_Service_WithPerformance\Async_Service_WithPerformance.csproj", "{028B0BDB-005B-42A7-B23D-DB9D5B87095D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Async_Client", "Async_Client\Async_Client.csproj", "{23F2AEDE-CD5B-4E85-8E88-CFB64F64286C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{497D8187-23F4-49EC-BD3D-9DC46F24C608}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{497D8187-23F4-49EC-BD3D-9DC46F24C608}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{497D8187-23F4-49EC-BD3D-9DC46F24C608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{028B0BDB-005B-42A7-B23D-DB9D5B87095D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{028B0BDB-005B-42A7-B23D-DB9D5B87095D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{028B0BDB-005B-42A7-B23D-DB9D5B87095D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{028B0BDB-005B-42A7-B23D-DB9D5B87095D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23F2AEDE-CD5B-4E85-8E88-CFB64F64286C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F2AEDE-CD5B-4E85-8E88-CFB64F64286C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F2AEDE-CD5B-4E85-8E88-CFB64F64286C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F2AEDE-CD5B-4E85-8E88-CFB64F64286C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
