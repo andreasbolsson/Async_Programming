@@ -26,7 +26,7 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("Classic threading example with self-managhed thread pool.");
+        Console.WriteLine("Classic threading example with self-managed thread pool.");
 
         _exit = false;
         _lock = new Semaphore(0,5);

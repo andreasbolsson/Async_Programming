@@ -18,6 +18,7 @@ namespace Async_Service
 
             t1.Wait();
 
+
             DisplayMessage(t1.Id, t1.Result);
         }
 
@@ -37,6 +38,9 @@ namespace Async_Service
                 _counter++;
                 Console.Write("\n_counter={0};", _counter);
                 await Task.Delay(1000, stoppingToken);
+
+                string str = await SingleTask("this is my string", 100);
+
             }
         }
 

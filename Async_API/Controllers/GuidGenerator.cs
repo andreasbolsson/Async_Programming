@@ -29,9 +29,9 @@ namespace Async_API.Controllers
             Console.WriteLine("Returning result.");
             Console.ForegroundColor = ConsoleColor.White;
 
-            t2.Wait();
+            await t1;
 
-            return t2.Result;
+            return await t2;
         }
 
         private async Task Say(string str)
